@@ -9,7 +9,7 @@
   User.create(
     email: "test#{n+1}@test.com",
     name: "テスト#{n+1}",
-    password: "test0{#{n+1}}"
+    password: "test0#{n+1}"
   )
 end
 
