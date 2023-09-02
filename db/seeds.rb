@@ -20,3 +20,20 @@ end
     user_id: n+1
   )
 end
+
+5.times do |n|
+  Group.create(
+    name: "sample#{n+1}",
+    introduction: "sample#{n+1} introduction",
+    owner_id: n+1,
+  )
+
+  GroupUser.create!(
+    user_id: n+1,
+    group_id: n+1
+  )
+end
+
+
+Group.find(1).users << User.find(2)
+Group.find(1).users << User.find(3)

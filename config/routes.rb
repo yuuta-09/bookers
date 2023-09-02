@@ -17,7 +17,7 @@ Rails.application.routes.draw do
     get 'join' => 'groups#join'
     delete 'leave' => 'groups#leave'
     get 'notice' => 'groups#new_mail'
-    get 'send' => 'groups#send_mail'
+    post 'send' => 'groups#send_mail'
   end
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   get '/search', to: 'searches#search'

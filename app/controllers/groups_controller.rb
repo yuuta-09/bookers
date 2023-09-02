@@ -57,10 +57,16 @@ class GroupsController < ApplicationController
 
   def send_mail
     @group = Group.find(params[:group_id])
-    group_users = @group.users
     @mail_title = params[:mail_title]
-    @mail_content = params[:mail_content]
-    NoticeMailer.send_mail(@mail_title, @mail_content, group_users).deliver
+    @mail_body = params[:mail_body]
+
+    event = {
+      :group => @group,
+      :title => @mail_title,
+      :body => @mail_body
+    }
+
+    NoticeMailer.send_notification(event)
   end
 
   private
