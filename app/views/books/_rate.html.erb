@@ -1,0 +1,22 @@
+<% if book.id.nil? %>  
+  <%= f.label :rate, 'Rate' %>
+  <div id="post_raty"></div>
+
+  <script>
+    $(document).on('turbolinks:load', function() {
+        let elem = document.querySelector('#post_raty');
+        if (elem == null) return;
+  
+        elem.innerHTML = ""
+        let opt = {  
+          starOn: "<%= asset_path('star-on.png') %>",
+          starOff: "<%= asset_path('star-off.png') %>",
+          starHalf: "<%= asset_path('star-half.png') %>",
+          scoreName: 'book[rate]',
+        };
+        raty(elem, opt);
+      });
+  </script>
+<% else %>
+  <%= render 'static_rate', book: book %>
+<% end %>

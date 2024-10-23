@@ -1,0 +1,12 @@
+let add_content = `
+  <div class="row flex-row-reverse align-items-center mb-2">
+    <div>
+      <%= image_tag current_user.get_profile_image(30, 30), {class: "rounded-circle"} %><br>
+      <p class="mb-0" style="font-size: 10px;"><%= current_user.name %></p>
+    </div>
+    <p class="mb-0 mr-2"><%= @chat.message %></p>
+  </div>
+`;
+
+$('.message').append(add_content);
+$('input[type=text]').val("");

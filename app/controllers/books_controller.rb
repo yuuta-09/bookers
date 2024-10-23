@@ -4,11 +4,19 @@ class BooksController < ApplicationController
 
   def show
     @book = Book.find(params[:id])
+    # 閲覧数を更新(+1)
+    @book.increment!(:view_count)
     @book_comment = BookComment.new
   end
 
   def index
-    @books = Book.all
+    # いいねの多い順にソート
+    @books = Book.all.sort{|a, b| a.favorites.count <=> b.favorites.count}.reverse
+    if params[:sort] == 'day'
+      @books = Book.all.order(created_at: :desc)
+    elsif params[:sort] == 'rate'
+      @books = @books.sort_by{|x| x.rate.to_i}.reverse
+    end
     @book = Book.new
   end
 
@@ -42,7 +50,7 @@ class BooksController < ApplicationController
   private
 
   def book_params
-    params.require(:book).permit(:title, :body)
+    params.require(:book).permit(:title, :body, :rate)
   end
 
   def ensure_correct_user

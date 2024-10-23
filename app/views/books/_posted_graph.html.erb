@@ -1,0 +1,66 @@
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <% for i in 6.downto(1) %>
+        <th><%= i %>日前</th>
+      <% end %>
+      <th>今日</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <% for i in 6.downto(0) %>
+        <td><%= user.posts_count_days(i) %></td>
+      <% end %>
+    </tr>
+  </tbody>
+</table>
+
+<div>
+  <canvas id="myChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+  $(document).on('turbolinks:load', function() {
+    var ctx = $('#myChart');
+    
+    var myChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['6日前', '5日前', '4日前', '3日前', '2日前', '1日前', '今日'],
+        datasets: [{
+          label: '投稿した本の数',
+          data: [
+            <%= user.posts_count_days(6) %>,
+            <%= user.posts_count_days(5) %>,
+            <%= user.posts_count_days(4) %>,
+            <%= user.posts_count_days(3) %>,
+            <%= user.posts_count_days(2) %>,
+            <%= user.posts_count_days(1) %>,
+            <%= user.posts_count_days(0) %>,
+          ],
+          borderColor: "#00f",
+          backgroundColor: "#fff",
+          tension: 0.4,
+        }],
+      },
+      options: {
+        title: {
+          display: true,
+          text: '7日間の投稿数の比較'
+        },
+        responsive: true,
+        scales: {
+          y:{
+            suggestedMin: 0,
+            suggestedMax: 10
+          },
+          x:{
+            stacked: true
+          },
+        }
+      }
+    })
+  })
+</script>

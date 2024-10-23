@@ -4,24 +4,33 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  # 本に関連した機能
   has_many :books
   has_many :book_comments, dependent: :destroy
   has_many :favorites, dependent: :destroy
-  
+
+  # フォロー機能
   has_many :reverse_of_relationships, class_name: "Relationship", foreign_key: "followed_id", dependent: :destroy
   has_many :followers, through: :reverse_of_relationships, source: :follower
-  
+
   has_many :relationships, class_name: "Relationship", foreign_key: "follower_id", dependent: :destroy
   has_many :followings, through: :relationships, source: :followed
 
+  # DM
+  has_many :user_rooms, dependent: :destroy
+  has_many :chats, dependent: :destroy
+  has_many :rooms, through: :user_rooms, dependent: :destroy
   has_many :group_users, dependent: :destroy
   has_many :group, through: :group_users
-  
+
+  # 画像(active_record)
   has_one_attached :profile_image
 
+  # validation
   validates :name, length: { minimum: 2, maximum: 20 }, uniqueness: true
   validates :introduction, length: { maximum: 50 }
-  
+
+  # methods
   def follow(user)
     relationships.create(followed_id: user.id)
   end
@@ -32,6 +41,35 @@ class User < ApplicationRecord
 
   def following?(user)
     followings.include?(user)
+  end
+
+  def following_each?(user)
+    followings.include?(user) && user.following?(self)
+  end
+
+  def posts_count_days(days)
+    unless days
+      books.created_today.count
+    else
+      start_date = days.days.ago.beginning_of_day
+      end_date = days.days.ago.end_of_day
+      books.where(created_at: start_date..end_date).count
+    end
+  end
+
+  def self.search(how, word)
+    case how
+    when "perfect_match"
+      users = User.where("name LIKE?", "#{word}")
+    when "forward_match"
+      users = User.where("name LIKE?", "#{word}%")
+    when "backward_match"
+      users = User.where("name LIKE?", "%#{word}")
+    when "partial_match"
+      users = User.where("name LIKE?", "%#{word}%")
+    else
+      users = User.all
+    end
   end
 
   def get_profile_image(weight, height)

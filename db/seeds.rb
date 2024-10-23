@@ -5,22 +5,33 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
 5.times do |n|
   User.create(
     email: "test#{n+1}@test.com",
     name: "テスト#{n+1}",
-    password: "test0#{n+1}"
-  )
+    password: "test0#{n+1}",
+    )
 end
+  
 
+stars_hist = ['bad', 'poor', 'regular', 'good', 'gorgeous']
 5.times do |n|
   Book.create(
     title: "test#{n+1}",
     body: "#{n+1}回読みました",
-    user_id: n+1
+    user_id: n+1,
+    category: "category#{rand(1..5)}",
+    rate: "#{rand(1..5)}",
   )
 end
 
+# relation(相互)
+User.find(1).follow(User.find(3))
+User.find(3).follow(User.find(1))
+
+# relation(一方通行)
+User.find(2).follow(User.find(4))
 5.times do |n|
   Group.create(
     name: "sample#{n+1}",

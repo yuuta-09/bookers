@@ -1,0 +1,8 @@
+<div class="container">
+  <h1><%= @range %>s searches for "<%= @word %>"</h1>
+  <% if @range == "User" %>
+    <%= render 'users/index', users: @users %>
+  <% else %>
+    <%= render 'books/index', books: @books %>
+  <% end %>
+</div>
