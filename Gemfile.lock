@@ -122,6 +122,8 @@ GEM
     mini_portile2 (2.5.3)
     minitest (5.14.4)
     msgpack (1.4.2)
+    net-http (0.4.1)
+      uri
     net-protocol (0.2.1)
       timeout
     net-smtp (0.3.3)
@@ -223,6 +225,7 @@ GEM
     turbolinks-source (5.2.0)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
+    uri (0.13.1)
     warden (1.2.9)
       rack (>= 2.0.9)
     web-console (4.1.0)
@@ -256,6 +259,7 @@ DEPENDENCIES
   image_processing (~> 1.2)
   jbuilder (~> 2.7)
   listen (~> 3.3)
+  net-http
   net-smtp
   puma (~> 5.0)
   rack-mini-profiler (~> 2.0)
